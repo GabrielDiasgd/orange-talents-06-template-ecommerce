@@ -30,6 +30,7 @@ public class User {
 	@PastOrPresent
 	private LocalDateTime creationDate = LocalDateTime.now();
 	
+	
 	/**
 	 * 
 	 * @param login string no formato de email

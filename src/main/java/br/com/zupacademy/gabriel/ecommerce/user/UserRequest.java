@@ -5,10 +5,13 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.zupacademy.gabriel.ecommerce.config.validations.UniqueValue;
+
 public class UserRequest {
 	
 	@NotBlank
 	@Email
+	@UniqueValue(domainClass = User.class, fieldName = "login")
 	private String login;
 	@NotBlank
 	@Length(min = 6)
