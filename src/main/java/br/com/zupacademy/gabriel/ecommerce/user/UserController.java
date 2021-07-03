@@ -1,5 +1,6 @@
 package br.com.zupacademy.gabriel.ecommerce.user;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<?> create (@RequestBody @Valid UserRequest userRequest) {
 		User user = userRequest.toModel();
 		userRepository.save(user);
