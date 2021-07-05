@@ -13,29 +13,27 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
 @RestControllerAdvice
 public class ExceptionHandler {
-	
+
 	@Autowired
 	private MessageSource messageSource;
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@org.springframework.web.bind.annotation.ExceptionHandler
-	public List<ProblemResponse> handleMethodArgumentNotValidException (MethodArgumentNotValidException exception) {
-		
+	@org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
+	public List<ProblemResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-		
+
 		List<ProblemResponse> response = new ArrayList<>();
-		
+
 		fieldErrors.forEach(erro -> {
 			String message = messageSource.getMessage(erro, LocaleContextHolder.getLocale());
 			ProblemResponse problem = new ProblemResponse(erro.getField(), message, LocalDateTime.now());
 			response.add(problem);
 		});
-		
+
 		return response;
-		
 	}
 
 }
