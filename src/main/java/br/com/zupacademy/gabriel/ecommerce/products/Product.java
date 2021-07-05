@@ -24,6 +24,9 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.zupacademy.gabriel.ecommerce.category.Category;
+import br.com.zupacademy.gabriel.ecommerce.products.characteristics.Characteristic;
+import br.com.zupacademy.gabriel.ecommerce.products.characteristics.CharacteristicsRequest;
+import br.com.zupacademy.gabriel.ecommerce.products.image.ProductImage;
 import br.com.zupacademy.gabriel.ecommerce.user.model.User;
 
 @Entity
@@ -43,8 +46,12 @@ public class Product {
 	private String description;
 	@PastOrPresent
 	private LocalDateTime creationDate = LocalDateTime.now();
+	
 	@Size(min = 3) @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
 	private Set<Characteristic> characteristics = new HashSet<>();
+	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+	private Set<ProductImage> images = new HashSet<>(); 
 	
 	@NotNull @ManyToOne
 	private Category category;
@@ -67,5 +74,41 @@ public class Product {
 		this.owner = user;
 		this.characteristics.addAll(characteristics.stream().map(c -> c.toModel(this)).collect(Collectors.toSet()));
 	}
+
+	public boolean belongUser(User user) {
+		return this.owner.equals(user);
+	}
+
+	public void setImages(Set<String> links) {
+		links.forEach(link -> this.images.add(new ProductImage(link, this)));
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+
+	
 	
 }

@@ -1,6 +1,8 @@
-package br.com.zupacademy.gabriel.ecommerce.products;
+package br.com.zupacademy.gabriel.ecommerce.products.characteristics;
 
 import javax.validation.constraints.NotBlank;
+
+import br.com.zupacademy.gabriel.ecommerce.products.Product;
 
 public class CharacteristicsRequest {
 	

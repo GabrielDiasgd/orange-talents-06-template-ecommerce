@@ -1,4 +1,4 @@
-package br.com.zupacademy.gabriel.ecommerce.products;
+package br.com.zupacademy.gabriel.ecommerce.products.image;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,28 +8,33 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Entity
-public class Characteristic {
+import br.com.zupacademy.gabriel.ecommerce.products.Product;
 
+@Entity
+public class ProductImage {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@NotBlank
-	private String name;
-	@NotBlank
-	private String description;
+	private String link;
+	
 	@NotNull
 	@ManyToOne
 	private Product product;
-
+	
 	@Deprecated
-	public Characteristic() {
+	public ProductImage() {
 	}
 
-	public Characteristic(@NotBlank String name, @NotBlank String description, @NotNull Product product) {
-		this.name = name;
-		this.description = description;
+	public ProductImage(@NotBlank String link, @NotNull Product product) {
+		super();
+		this.link = link;
 		this.product = product;
 	}
+	
+	
+	
 
 }

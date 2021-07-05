@@ -17,6 +17,7 @@ import org.hibernate.validator.constraints.Length;
 import br.com.zupacademy.gabriel.ecommerce.category.Category;
 import br.com.zupacademy.gabriel.ecommerce.category.CategoryRepository;
 import br.com.zupacademy.gabriel.ecommerce.config.validations.ExistsId;
+import br.com.zupacademy.gabriel.ecommerce.products.characteristics.CharacteristicsRequest;
 import br.com.zupacademy.gabriel.ecommerce.user.model.User;
 
 public class ProductRequest {
