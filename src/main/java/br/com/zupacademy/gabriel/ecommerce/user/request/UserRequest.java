@@ -1,11 +1,13 @@
-package br.com.zupacademy.gabriel.ecommerce.user;
+package br.com.zupacademy.gabriel.ecommerce.user.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import br.com.zupacademy.gabriel.ecommerce.config.validations.UniqueValue;
+import br.com.zupacademy.gabriel.ecommerce.user.model.User;
 
 public class UserRequest {
 	
@@ -27,6 +29,11 @@ public class UserRequest {
 
 	public User toModel() {
 		return new User(this.login, this.password);
+	}
+
+
+	public UsernamePasswordAuthenticationToken toLogin() {
+		return new UsernamePasswordAuthenticationToken(this.login, this.password);
 	}
 	
 	
