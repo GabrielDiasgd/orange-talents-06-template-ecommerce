@@ -27,6 +27,7 @@ import br.com.zupacademy.gabriel.ecommerce.category.Category;
 import br.com.zupacademy.gabriel.ecommerce.products.characteristics.Characteristic;
 import br.com.zupacademy.gabriel.ecommerce.products.characteristics.CharacteristicsRequest;
 import br.com.zupacademy.gabriel.ecommerce.products.image.ProductImage;
+import br.com.zupacademy.gabriel.ecommerce.products.question.Question;
 import br.com.zupacademy.gabriel.ecommerce.products.review.Review;
 import br.com.zupacademy.gabriel.ecommerce.user.model.User;
 
@@ -56,6 +57,9 @@ public class Product {
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
 	private Set<Review> reviews = new HashSet<>();
+	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+	private Set<Question> questions = new HashSet<>();
 	
 	@NotNull @ManyToOne
 	private Category category;
