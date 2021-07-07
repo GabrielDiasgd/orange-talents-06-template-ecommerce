@@ -21,7 +21,7 @@ public class Review {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Min(1) @Max(5)
+	@Min(1) @Max(5) @NotNull
 	private Integer rating;
 	@NotBlank
 	private String title;
@@ -32,6 +32,28 @@ public class Review {
 	@NotNull @ManyToOne
 	private Product product;
 	
+	
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
 	@Deprecated
 	public Review() {	
 	}

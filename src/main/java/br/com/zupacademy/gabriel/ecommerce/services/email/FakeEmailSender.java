@@ -9,14 +9,11 @@ import br.com.zupacademy.gabriel.ecommerce.products.question.Question;
 @Primary
 public class FakeEmailSender implements EmailSender {
 
-	/*
-	 * Aqui ficaria a lógica para o envio de um email de verdade
-	 * porém estou apenas simulando o envio e imprimindo no console
-	 */
 	@Override
-	public void sendEmail(Question question) {
-		System.out.println("Enviando o e-mail da pergunta" + question.getClass().getFields()) ;
-		
+	public void send(Question question) {
+		System.out.println("O usuário " + question.getUser().getUsername() + " enviou a seguinte pergunta: " 
+				+ question.getTitle() + " a respeito do produto " + question.getProduct().getName());
 	}
+
 
 }

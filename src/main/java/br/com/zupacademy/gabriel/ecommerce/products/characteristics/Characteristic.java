@@ -34,4 +34,14 @@ public class Characteristic {
 		this.product = product;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+	
+	
+
 }

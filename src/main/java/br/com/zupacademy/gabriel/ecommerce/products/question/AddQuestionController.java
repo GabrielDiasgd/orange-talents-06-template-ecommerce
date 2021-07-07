@@ -26,7 +26,7 @@ public class AddQuestionController {
 	@Autowired
 	private QuestionRepository questionRepository;
 	@Autowired
-	private EmailSender fakeEmailSender;
+	private EmailSender emailSender;
 	
 	@Transactional
 	@PostMapping("/products/{id}/questions")
@@ -38,8 +38,7 @@ public class AddQuestionController {
 		}
 		Question question = questionRequest.toModel(user, product.get());
 		questionRepository.save(question);
-		
-		fakeEmailSender.sendEmail(question);
+		emailSender.send(question);
 		
 		return ResponseEntity.ok().build();
 	}

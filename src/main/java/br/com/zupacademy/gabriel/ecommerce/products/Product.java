@@ -33,40 +33,45 @@ import br.com.zupacademy.gabriel.ecommerce.user.model.User;
 
 @Entity
 public class Product {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@NotBlank
 	private String name;
-	@Positive @NotNull
+	@Positive
+	@NotNull
 	private BigDecimal price;
-	@DecimalMin("0") @NotNull
+	@DecimalMin("0")
+	@NotNull
 	private Integer quantity;
 	@NotBlank
 	@Length(max = 1000)
 	private String description;
 	@PastOrPresent
 	private LocalDateTime creationDate = LocalDateTime.now();
-	
-	@Size(min = 3) @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
+
+	@Size(min = 3)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
 	private Set<Characteristic> characteristics = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
-	private Set<ProductImage> images = new HashSet<>(); 
-	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+	private Set<ProductImage> images = new HashSet<>();
+
+	@OneToMany(mappedBy = "product")
 	private Set<Review> reviews = new HashSet<>();
-	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+
+	@OneToMany(mappedBy = "product")
 	private Set<Question> questions = new HashSet<>();
-	
-	@NotNull @ManyToOne
+
+	@NotNull
+	@ManyToOne
 	private Category category;
-	
-	@NotNull @ManyToOne
+
+	@NotNull
+	@ManyToOne
 	private User owner;
-	
+
 	@Deprecated
 	public Product() {
 	}
@@ -89,6 +94,54 @@ public class Product {
 
 	public void setImages(Set<String> links) {
 		links.forEach(link -> this.images.add(new ProductImage(link, this)));
+	}
+
+	public Long totalNumberRating() {
+		return this.reviews.stream(). count();
+	}
+		
+	public double produtcAverageRating() {
+		return reviews.stream().mapToDouble(review -> review.getRating()).average().orElse(0.0);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public Set<Characteristic> getCharacteristics() {
+		return characteristics;
+	}
+
+	public Set<ProductImage> getImages() {
+		return images;
+	}
+
+	public Set<Review> getReviews() {
+		return reviews;
+	}
+
+	public Set<Question> getQuestions() {
+		return questions;
+	}
+
+	public User getOwner() {
+		return owner;
 	}
 
 	@Override
@@ -116,7 +169,4 @@ public class Product {
 		return true;
 	}
 
-
-	
-	
 }

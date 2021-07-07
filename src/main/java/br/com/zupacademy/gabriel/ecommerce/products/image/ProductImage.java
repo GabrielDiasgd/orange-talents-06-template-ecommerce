@@ -33,6 +33,11 @@ public class ProductImage {
 		this.link = link;
 		this.product = product;
 	}
+
+	public String getLink() {
+		return link;
+	}
+	
 	
 	
 	
