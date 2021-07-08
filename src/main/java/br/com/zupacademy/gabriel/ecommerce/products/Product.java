@@ -169,4 +169,12 @@ public class Product {
 		return true;
 	}
 
+	public boolean haveStock(Integer orderQuantity) {
+		if (this.quantity >= orderQuantity) {
+			this.quantity -= orderQuantity;
+			return true;
+		}
+		return false;
+	}
+
 }
