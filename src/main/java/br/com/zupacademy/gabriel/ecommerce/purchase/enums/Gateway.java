@@ -15,6 +15,7 @@ public enum Gateway {
 		this.gateway = gateway;
 	}
 	
+
 	public GatewayPurchase getGateway() {
 		return gateway;
 	}

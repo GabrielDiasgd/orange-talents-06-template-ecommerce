@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zupacademy.gabriel.ecommerce.products.Product;
 import br.com.zupacademy.gabriel.ecommerce.products.ProductRepository;
-import br.com.zupacademy.gabriel.ecommerce.services.email.EmailSender;
+import br.com.zupacademy.gabriel.ecommerce.services.email.SendEmailPurchase;
 import br.com.zupacademy.gabriel.ecommerce.user.model.User;
 
 @RestController
@@ -26,11 +28,11 @@ public class PurchaseController {
 	@Autowired
 	private PurchaseRepository purchaseRepository;
 	@Autowired
-	private EmailSender emailSender;
+	private SendEmailPurchase sendEmail;
 	
-	@PostMapping("/orders")
+	@PostMapping("/purchase")
 	@Transactional
-	public String createPurchase (@RequestBody @Valid PurchaseRequest purchaseRequest, 
+	public ResponseEntity<?> createPurchase (@RequestBody @Valid PurchaseRequest purchaseRequest, 
 			@AuthenticationPrincipal User buyer, UriComponentsBuilder uriComponentsBuilder) throws BindException {
 		Optional<Product> product = productRepository.findById(purchaseRequest.getProductId());
 		
@@ -38,14 +40,13 @@ public class PurchaseController {
 			Purchase purchase = new Purchase(purchaseRequest.getQuantity(),product.get(), buyer, purchaseRequest.getGateway());
 			purchaseRepository.save(purchase);
 			
-			emailSender.send(purchase);
-			return purchase.generateGateway(uriComponentsBuilder);
+			
+			sendEmail.forNewPurchase(purchase);
+			return ResponseEntity.status(HttpStatus.FOUND).body(purchase.generateGateway(uriComponentsBuilder));
 		} 
-
-		BindException stockProblem = new BindException(purchaseRequest, "purchaseRequest");
-		stockProblem.reject(null, "Não foi possível realizar a compra por conta do estoque");
 		
-		throw stockProblem;
+		return ResponseEntity.badRequest().body("Não foi possível finalizar a compra "
+				+ "pois o produto não tem estoque suficiente para quantidade requisitada de " + purchaseRequest.getQuantity() + " unidades" );
 	}
 
 }

@@ -35,6 +35,13 @@ public class ExceptionHandler {
 
 		return response;
 	}
-
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@org.springframework.web.bind.annotation.ExceptionHandler(IllegalArgumentException.class)
+	public ProblemResponse handleIllegalArgument(IllegalArgumentException exception) {
+		
+	ProblemResponse response = new ProblemResponse(exception.getLocalizedMessage(), exception.getMessage(), LocalDateTime.now());
+		return response;
+	}
 
 }

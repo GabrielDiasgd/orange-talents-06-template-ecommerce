@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.zupacademy.gabriel.ecommerce.products.Product;
 import br.com.zupacademy.gabriel.ecommerce.products.ProductRepository;
-import br.com.zupacademy.gabriel.ecommerce.services.email.EmailSender;
+import br.com.zupacademy.gabriel.ecommerce.services.email.SendEmailQuestion;
 import br.com.zupacademy.gabriel.ecommerce.user.model.User;
 
 @RestController
@@ -26,8 +26,8 @@ public class AddQuestionController {
 	@Autowired
 	private QuestionRepository questionRepository;
 	@Autowired
-	private EmailSender emailSender;
-	
+	private SendEmailQuestion sendEmail;
+
 	@Transactional
 	@PostMapping("/products/{id}/questions")
 	public ResponseEntity<?> addQuestion (@RequestBody @Valid QuestionRequest questionRequest,
@@ -38,7 +38,7 @@ public class AddQuestionController {
 		}
 		Question question = questionRequest.toModel(user, product.get());
 		questionRepository.save(question);
-		emailSender.send(question);
+		sendEmail.forNewQuestion(question);
 		
 		return ResponseEntity.ok().build();
 	}
